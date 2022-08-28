@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="js/scripts.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <title>Ahorcado</title>
+</head>
+
+<body>
+
+    <header>
+        <img src="img/logo.png" alt="Logo Alura">
+    </header>
+
+    <main>
+        <section id="juego" class="juego">
+            <div class="monigote">
+                <canvas></canvas>
+            </div>
+            <div id="letrasPalabra"></div>
+            <div id="letrasUsadas"></div>
+            <div>
+                <button id="boton_nuevaPartida" class="boton">Nueva Partida</button>
+                <button id="boton_rendirse" class="boton">Rendirse</button>
+            </div>
+        </section>
+
+        <section id="menu-principal">
+            <button id="boton_start" class="boton">Comenzar</button>
+            <button id="boton_palabraNueva" class="boton">Agregar Palabra</button>
+        </section>
+
+        <section id="menu-agregarPalabra">
+            <input type="text" id="palabraNueva" placeholder="Ingrese una Palabra">
+            <div class="warning">
+                <img src="img/warning.png" alt="Advertencia">
+                <h6>Máx. de 8 letras</h6>
+            </div>
+            <div>
+                <button id="boton_guardar" class="boton">Guardar</button>
+                <button id="boton_volver" class="boton">Volver</button>
+            </div>
+        </section>
+    </main>
+
+</body>
+
+</html>
