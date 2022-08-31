@@ -22,14 +22,13 @@ function irJuego() {
     comenzarJuego();
 }
 
-function nuevaPartida(){
+function nuevaPartida() {
     resetLetras();
     eliminarHijos(document.getElementById("letrasPalabra"));
     comenzarJuego();
 }
 
 function rendirse() {
-    jugando = false;
     cerrarPantalla(juego);
     irMenuPrincipal();
     resetLetras();
@@ -41,10 +40,23 @@ function resetLetras() {
     letrasUsadas = [];
 }
 
+function resetIntentos() {
+    intentos = 7;
+}
+
+function resetLetrasCorrectas(){
+    letrasCorrectras = 0;
+}
+
 function comenzarJuego() {
     jugando = true;
-    intentos = 6;
+    resetIntentos();
+    resetLetrasCorrectas();
     palabra = palabras[Math.floor(Math.random() * palabras.length)];
+
+    limpiarCanvas();
+    dibujarHorca();
+
 
     for (let i = 0; i < palabra.length; i++) {
         var nuevoDiv = document.createElement("div");
@@ -58,6 +70,7 @@ function comenzarJuego() {
 
         document.getElementById("letrasPalabra").appendChild(nuevoDiv);
     }
+
 }
 
 function eliminarHijos(padre) {
@@ -84,50 +97,86 @@ function agregarPalabra() {
     }
 }
 
-function dibujarCabeza(){
+function dibujarCabeza(radio) {
+    pincel.arc(ancho * 0.7, altura * 0.3 + radio, radio, 1.5 * Math.PI, 3.5 * Math.PI);
+}
+
+function dibujarTorso(cabeza) {
+    dibujarLinea(ancho * 0.7, altura * 0.3 + 2 * cabeza, ancho * 0.7, altura * 0.65);
+}
+
+function dibujarBrazoIzq() {
+    dibujarLinea(ancho * 0.7, altura * 0.43, ancho * 0.75, altura * 0.50);
+}
+
+function dibujarBrazoDer() {
+    dibujarLinea(ancho * 0.7, altura * 0.43, ancho * 0.65, altura * 0.50);
+}
+
+function dibujarPiernaIzq() {
+    dibujarLinea(ancho * 0.7, altura * 0.65, ancho * 0.73, altura * 0.7);
+}
+
+function dibujarPiernaDer() {
+    dibujarLinea(ancho * 0.7, altura * 0.65, ancho * 0.67, altura * 0.7);
 
 }
 
-function dibujarTorso(){
+function dibujarMonigote(parte) {
+    let radCabeza = 50;
 
-}
+    pincel.beginPath();
 
-function dibujarBrazoIzq(){
-
-}
-
-function dibujarBrazoDer(){
-
-}
-
-function dibujarPiernaIzq(){
-
-}
-
-function dibujarPiernaDer(){
-    
-}
-
-function dibujarMonigote(parte){
-    switch(parte){
-        case 1: dibujarCabeza(); break;
-        case 2: dibujarTorso(); break;
-        case 3: dibujarBrazoIzq(); break;
+    switch (parte) {
+        case 7: dibujarCabeza(radCabeza); break;
+        case 6: dibujarTorso(radCabeza); break;
+        case 5: dibujarBrazoIzq(); break;
         case 4: dibujarBrazoDer(); break;
-        case 5: dibujarPiernaIzq(); break;
-        case 6: dibujarPiernaDer(); break;
+        case 3: dibujarPiernaIzq(); break;
+        case 2: dibujarPiernaDer(); break;
     }
+
+    pincel.stroke();
 }
 
-const palabras = ["HOLA", "JAMON", "GATO", "PEPINO"];
+function dibujarLinea(x1, y1, x2, y2) {
+    pincel.moveTo(x1, y1);
+    pincel.lineTo(x2, y2);
+}
+
+function limpiarCanvas() {
+    pincel.fillStyle = "#eeeeee";
+    pincel.fillRect(0, 0, ancho, altura);
+}
+
+function dibujarHorca() {
+    pincel.lineWidth = 22;
+    pincel.strokeStyle = "#0A3871";
+
+    pincel.beginPath();
+
+    dibujarLinea(ancho * 0.33, altura - 11, ancho * 0.66, altura - 11);
+
+    dibujarLinea(ancho * 0.5, altura, ancho * 0.5, altura * 0.2);
+
+    dibujarLinea(ancho * 0.5 - 11, altura * 0.2, ancho * 0.7, altura * 0.2);
+
+    dibujarLinea(ancho * 0.7, altura * 0.2 - 11, ancho * 0.7, altura * 0.3);
+
+    pincel.stroke();
+
+}
+
+const palabras = ["HOLA", "JAMON", "GATO", "PEPINO", "JUPITER", "MERCEDES", "FRIO",
+    "LIBRO", "PAIS", "PERRO", "LORO", "RATA", "JAPON", "MINERAL"];
 
 var menuPrincipal = document.getElementById("menu-principal");
 var menuPalabra = document.getElementById("menu-agregarPalabra");
 var juego = document.getElementById("juego");
 var letrasUsadas = [];
 
-var jugando = false;
-var intentos = 6;
+var intentos;
+var letrasCorrectras = 0;
 var palabra;
 
 //Menu Principal
@@ -151,44 +200,65 @@ const boton_rendirse = document.getElementById("boton_rendirse");
 boton_rendirse.onclick = rendirse;
 boton_nuevaPartida.onclick = nuevaPartida;
 
-window.addEventListener('keydown', function (k) {
-    let kLetra = k.key;
+//Canvas
+const canvas = document.getElementById("monigote");
+const altura = canvas.height;
+const ancho = canvas.width;
+const pincel = canvas.getContext("2d");
 
-    if (jugando && intentos) {
+function validaLetra(letra) {
+    if (intentos && letrasCorrectras != palabra.length) {
 
         //Se evalua si la tecla presionada esta entre la a y la a
-        if (kLetra.charCodeAt(0) >= 97 && kLetra.charCodeAt(0) <= 122) {
-            kLetra = kLetra.toLocaleUpperCase();
+        if (letra.charCodeAt(0) >= 97 && letra.charCodeAt(0) <= 122) {
+            letra = letra.toLocaleUpperCase();
 
-            //Si la letra no se habia ingresado antes la agrega al arreglo
-            if (!letrasUsadas.includes(kLetra)) {
-                letrasUsadas.push(kLetra);
-            }
+            //Si la letra no se habia ingresado antes la agrega al arreglo y ejecuta todo
+            //Si la letra ya se uso, retorna y no ejecuta nada
+            if (!letrasUsadas.includes(letra)) {
+                letrasUsadas.push(letra);
 
-            //Se escribe en pantalla la lista de letras ya usadas
-            this.document.getElementById("letrasUsadas").innerHTML = letrasUsadas.join(" ");
+                //Se escribe en pantalla la lista de letras ya usadas
+                this.document.getElementById("letrasUsadas").innerHTML = letrasUsadas.join(" ");
 
-            //Si la letra esta en la palabra a adivinar, esta se escribe en las lineas superiores
-            if (palabra.includes(kLetra)) {
-                for (let i = 0; i < palabra.length; i++) {
-                    if (palabra[i] == kLetra) {
-                        document.getElementById("letrasPalabra").children.item(i).firstChild.innerHTML = kLetra;
+                //Si la letra esta en la palabra a adivinar, esta se escribe en las lineas superiores
+
+                if (palabra.includes(letra)) {
+                    for (let i = 0; i < palabra.length; i++) {
+                        if (palabra[i] == letra) {
+                            document.getElementById("letrasPalabra").children.item(i).firstChild.innerHTML = letra;
+                            letrasCorrectras++;
+
+                            if (letrasCorrectras == palabra.length) {
+                                setTimeout(function () {
+                                    alert("GANASTE");
+                                }, 100)
+
+                            }
+                        }
                     }
-                }
-            } else {
-                intentos--;
 
-                dibujarMonigote(intentos);
+                } else {
+                    dibujarMonigote(intentos);
+                    intentos--;
 
-                if(!intentos){
-                    this.alert("GAME OVER");
+                    if (!intentos) {
+                        alert("GAME OVER la palabra era: " + palabra);
+                    }
+
                 }
             }
         }
 
-
-
-
-
     }
+}
+
+canvas.addEventListener('touchstart', function () {
+    let letra = prompt("Ingrese Letra");
+    validaLetra(letra);
+})
+
+window.addEventListener('keydown', function (k) {
+    let kLetra = k.key;
+    validaLetra(kLetra);
 })
