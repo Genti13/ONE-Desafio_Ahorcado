@@ -57,6 +57,10 @@ function comenzarJuego() {
     limpiarCanvas();
     dibujarHorca();
 
+    if (screen.width < 800) {
+        alert("Toca el dibujo para ingresar una letra");
+    }
+
 
     for (let i = 0; i < palabra.length; i++) {
         var nuevoDiv = document.createElement("div");
@@ -156,13 +160,13 @@ function dibujarHorca() {
 
     pincel.beginPath();
 
-    dibujarLinea(ancho * 0.33, altura - grosorPincel/2, ancho * 0.66, altura - grosorPincel/2);
+    dibujarLinea(ancho * 0.33, altura - grosorPincel / 2, ancho * 0.66, altura - grosorPincel / 2);
 
     dibujarLinea(ancho * 0.5, altura, ancho * 0.5, altura * 0.2);
 
-    dibujarLinea(ancho * 0.5 - grosorPincel/2, altura * 0.2, ancho * 0.7, altura * 0.2);
+    dibujarLinea(ancho * 0.5 - grosorPincel / 2, altura * 0.2, ancho * 0.7, altura * 0.2);
 
-    dibujarLinea(ancho * 0.7, altura * 0.2 - grosorPincel/2, ancho * 0.7, altura * 0.3);
+    dibujarLinea(ancho * 0.7, altura * 0.2 - grosorPincel / 2, ancho * 0.7, altura * 0.3);
 
     pincel.stroke();
 
@@ -208,6 +212,7 @@ const ancho = canvas.width;
 const pincel = canvas.getContext("2d");
 
 function validaLetra(letra) {
+    letra = letra[0]; //Por si en telefonos se ingresan mas de una letra
     if (intentos && letrasCorrectras != palabra.length && juego.style.display == "block") {
 
         //Se evalua si la tecla presionada esta entre la a y la a
