@@ -44,7 +44,7 @@ function resetIntentos() {
     intentos = 7;
 }
 
-function resetLetrasCorrectas(){
+function resetLetrasCorrectas() {
     letrasCorrectras = 0;
 }
 
@@ -145,23 +145,24 @@ function dibujarLinea(x1, y1, x2, y2) {
 }
 
 function limpiarCanvas() {
-    pincel.fillStyle = "#eeeeee";
+    pincel.fillStyle = "#ffffff";
     pincel.fillRect(0, 0, ancho, altura);
 }
 
 function dibujarHorca() {
-    pincel.lineWidth = 22;
+    let grosorPincel = 30;
+    pincel.lineWidth = grosorPincel;
     pincel.strokeStyle = "#0A3871";
 
     pincel.beginPath();
 
-    dibujarLinea(ancho * 0.33, altura - 11, ancho * 0.66, altura - 11);
+    dibujarLinea(ancho * 0.33, altura - grosorPincel/2, ancho * 0.66, altura - grosorPincel/2);
 
     dibujarLinea(ancho * 0.5, altura, ancho * 0.5, altura * 0.2);
 
-    dibujarLinea(ancho * 0.5 - 11, altura * 0.2, ancho * 0.7, altura * 0.2);
+    dibujarLinea(ancho * 0.5 - grosorPincel/2, altura * 0.2, ancho * 0.7, altura * 0.2);
 
-    dibujarLinea(ancho * 0.7, altura * 0.2 - 11, ancho * 0.7, altura * 0.3);
+    dibujarLinea(ancho * 0.7, altura * 0.2 - grosorPincel/2, ancho * 0.7, altura * 0.3);
 
     pincel.stroke();
 
@@ -207,11 +208,11 @@ const ancho = canvas.width;
 const pincel = canvas.getContext("2d");
 
 function validaLetra(letra) {
-    if (intentos && letrasCorrectras != palabra.length) {
+    if (intentos && letrasCorrectras != palabra.length && juego.style.display == "block") {
 
         //Se evalua si la tecla presionada esta entre la a y la a
         if (letra.charCodeAt(0) >= 97 && letra.charCodeAt(0) <= 122) {
-            letra = letra.toLocaleUpperCase();
+            letra = letra.toUpperCase();
 
             //Si la letra no se habia ingresado antes la agrega al arreglo y ejecuta todo
             //Si la letra ya se uso, retorna y no ejecuta nada
@@ -254,11 +255,11 @@ function validaLetra(letra) {
 }
 
 canvas.addEventListener('touchstart', function () {
-    let letra = prompt("Ingrese Letra");
-    validaLetra(letra);
+    validaLetra(prompt("Ingrese Letra"));
 })
 
 window.addEventListener('keydown', function (k) {
-    let kLetra = k.key;
-    validaLetra(kLetra);
+    if (k.key.length == 1) {
+        validaLetra(k.key.toLocaleLowerCase());
+    }
 })

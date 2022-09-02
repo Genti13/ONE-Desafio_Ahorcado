@@ -4,23 +4,55 @@ header img {
 
 main {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+}
+
+canvas {
+    background-color: #eeeeee;
+    width: 100%;
+    height: 400px;
+}
+
+.boton {
+    width: 80%;
+    max-width: 512px;
+    height: 67px;
+    border-radius: 24px;
+    margin: 10px;
+}
+
+.warning {
+    display: flex;
+    margin: 0px auto 5px 5px;
+}
+
+.warning>h6 {
+    margin-left: 5px;
 }
 
 #menu-principal {
     margin: 252px auto;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
-.boton {
-    width: 317px;
-    border-radius: 24px;
-    height: 67px;
+/*Solo estos botonesn o se comportan como los demas*/
+/*Esto fixea eso*/
+#menu-principal>.boton{
+    text-align: center;
+    width: fit-content;
 }
 
-#boton_start {
-    height: 114px;
+#boton_palabraNueva{
+    padding: 0px 25px;
+}
+
+#boton_start{
+    height: 120px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 #boton_start,
@@ -38,10 +70,6 @@ main {
     color: #0A3871;
     background-color: #eeeeee;
     border: 1px solid #0A3871;
-}
-
-#boton_palabraNueva {
-    margin-top: 38px;
 }
 
 #boton_palabraNueva,
@@ -70,7 +98,6 @@ main {
     justify-content: space-evenly;
 }
 
-
 #menu-agregarPalabra {
     margin: 126px auto;
     display: none;
@@ -90,15 +117,6 @@ main {
     color: #0A3871;
 }
 
-.warning {
-    display: flex;
-    margin: 0px auto 5px 5px;
-}
-
-.warning>h6 {
-    margin-left: 5px;
-}
-
 #letrasPalabra {
     display: flex;
     justify-content: space-evenly;
@@ -107,11 +125,11 @@ main {
     text-align: center;
 }
 
-#letrasPalabra > div >h3{
+#letrasPalabra>div>h3 {
     height: 40px;
 }
 
-#letrasUsadas{
+#letrasUsadas {
     margin: 20px auto;
     height: 22px;
     font-size: 22px;
@@ -120,8 +138,64 @@ main {
     color: #aaaaaa;
 }
 
-canvas {
-    background-color: #eeeeee;
-    width: 100%;
-    height: 400px;
+
+@media screen and (max-width:412px) {
+
+    header img {
+        scale: 0.5;
+        margin: 10px auto 10px 5px;
+    }
+
+    canvas {
+        width: 100%;
+        height: 190px;
+    }
+    #juego {
+        width: 100%;
+    }
+
+    #letrasPalabra>div>img {
+        width: 80%;
+        height: 5%;
+    }
+
+    #juego>div:last-child {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    #boton_start:hover,
+    #boton_guardar:hover,
+    #boton_nuevaPartida:hover {
+        color: #ffffff;
+        background: #0A3871 radial-gradient(circle, transparent 1%, #14519b 1%) center/15000%;
+    }
+
+    #boton_start:active,
+    #boton_guardar:active,
+    #boton_nuevaPartida:active {
+        background-color: #14519b;
+        background-size: 100%;
+        transition: background 0s;
+    }
+
+    #menu-principal{
+        margin: 50px auto;
+    }
+
+    #menu-agregarPalabra {
+        margin: 70px auto;
+        display: none;
+    }
+
+    #menu-agregarPalabra>input {
+        margin-bottom: 70px;
+    }
+
+    #menu-agregarPalabra>div:last-child{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
